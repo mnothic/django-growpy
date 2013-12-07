@@ -1,0 +1,102 @@
+    <script type="text/javascript">
+        $(document).ready(function () {
+            // prepare chart data
+            var source =
+            {
+                 datatype: "json",
+                 datafields: [
+                     { name: 'date', type: 'date'},
+                     { name: 'size'},
+                     { name: 'used'}
+                ],
+                url: '/getstat/{{ node_id }}/{{ fs_id }}/2013/01/12/'
+            };
+            var data = new $.jqx.dataAdapter(source,
+            {
+                autoBind: true,
+                async: false,
+                downloadComplete: function () { },
+                loadComplete: function () { },
+                loadError: function () { }
+            });
+            var toolTipChart = function (value, itemIndex, serie, group, categoryValue, categoryAxis) {
+                var r ='<div style="text-align:left";>' +
+                       '<b>Month: ' + categoryValue + '</b><br />' +
+                       '<b>'+ serie.displayText +': ' + value + '</b><br />' +
+                       '</div>';
+                //console.log(r);
+                return r;
+            };
+            console.log(JSON.stringify(data));
+            // prepare jqxChart settings
+            var settings = {
+                title: "GrowPY Filesystem Stats",
+                description:  data['recordids'][0]['name'],
+                padding: { left: 5, top: 5, right: 40, bottom: 20 },
+                titlePadding: { left: 90, top: 0, right: 0, bottom: 10 },
+                source: data['recordids'],
+                categoryAxis:
+                {
+                    dataField: 'date',
+                    gridLinesInterval: 6,
+                    showGridLines: false,
+                    showLegend: true
+                },
+                colorScheme: 'scheme09',
+                showToolTips: true,
+                seriesGroups:
+                [
+                    {
+                        type: 'area',
+                        toolTipFormatFunction: toolTipChart,
+                        valueAxis:
+                        {
+                            minValue: 0,
+                            maxValue: 200,
+                            unitInterval: 20,
+                            description: 'Giga Bytes'
+                        },
+                        /*
+                        mouseover: myEventHandler,
+                        mouseout: myEventHandler,
+                        click: myEventHandler,
+                        */
+                        series: [
+                            { dataField: 'used', displayText: 'Used'},
+                            { dataField: 'free', displayText: 'Free'},
+                            { dataField: 'size', displayText: 'Size'}
+                        ]
+                    }
+                ]
+            };
+            $('#chartContainer').jqxChart(settings);
+            $(document).ready(function(){
+                var min = 0
+                var max = 0
+                var count = 0
+                $.each(data['recordids'], function(index, value){
+                    $.each(value, function(key,value) {
+                        //console.log(key)
+                        if (key == 'used') {
+                            if (count == 0)  { min = value }
+                            if (min > value) { min = value }
+                            if (max < value) { max = value }
+                            count++
+                        }
+                    });
+                });
+                $('#recommended').html('<strong>Recommended provisioning: ' + (max - min) + 'GB/Year<strong>');
+            });
+        });
+    </script>
+    <table>
+        <tr>
+            <td>
+                <div id='chartContainer' style="width:740px; height: 360px"/>
+            </td>
+        <tr>
+            <td>
+                <div id="recommended"></div>
+            </td>
+        </tr>
+    </table>

@@ -1,0 +1,199 @@
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $.extend(true, $.hik.jtable.prototype.options, {
+            columnResizable: false,
+            animationsEnabled: false,
+            ajaxSettings: {
+                type: 'POST'
+            }
+        });
+
+        $('#nodelist').jtable({
+            title: 'Hosts list',
+            paging: true, //Enable paging
+            pageSize: 10, //Set page size (default: 10)
+            sorting: true, //Enable sorting
+            defaultSorting: 'Order node_id ASC',
+            actions: {
+                listAction: "/getnodes/",
+                createAction: '/node/add/',
+                updateAction: '/node/update/',
+                deleteAction: '/node/del/'
+            },
+            fields: {
+                node_id: {
+                    title: 'ID',
+                    key: true,
+                    list: false,
+                    create: false,
+                    edit: false
+                },
+                fs: {
+                    title: 'FS',
+                    width: '.2%',
+                    sorting: false,
+                    edit: false,
+                    create: false,
+                    display: function (node) {
+                        var $img = $('<img height="16px" width="16px" src="/static/imgs/hdisk.png" title="List File Systems" />');
+
+                        $img.click(function () {
+                        $('#nodelist').jtable('openChildTable',
+                            $img.closest('tr'),
+                            {
+                                title: node.record.node_name + ' - FileSystem',
+                                actions: {
+                                    listAction: '/node/fs/list/' + node.record.node_id
+                                },
+                                fields: {
+                                    node_id: {
+                                        type: 'hidden',
+                                        defaultValue: node.record.node_id,
+                                        list: false
+                                    },
+                                    fs_id: {
+                                        type: 'hidden',
+                                        list: false
+                                    },
+                                    chart: {
+                                        width: '.2%',
+                                        title: 'ST',
+                                        sorting: false,
+                                        display: function (data) {
+                                                var $img = $('<img height="16px" width="16px" src="/static/imgs/shine_14.png" title="Draw Chart of File Systems" />');
+                                                $img.click(function () {
+                                                    $("div.overlay").toggle();
+                                                    $("div.overlay > div.chart").load('/node/fs/chart/',{
+                                                        'node_id': node.record.node_id,
+                                                        'fs_id': data.record.fs_id
+                                                    }).fadeIn('slow');
+                                                    $("div.overlay").click(function (){
+                                                        $("div.overlay").css('display','none');
+                                                    })
+                                            });
+                                            return $img
+                                        }
+                                    },
+                                    fs_name: {
+                                        title: 'FS Name',
+                                        width: '20%'
+                                    },
+                                    fs_pmount: {
+                                        title: 'FS Mount Point',
+                                        width: '20%'
+                                    }
+                                }
+                            }, function (data) { //opened handler
+                                    data.childTable.jtable('load');
+                            });
+                        });
+                        //Return image to show on the person row
+                        return $img;
+                    }
+                },
+                node_name: {
+                    title: 'Server Name',
+                    width: '20%'
+                },
+                node_os_name: {
+                    title: 'Operating System',
+                    width: '20%',
+                    options: {
+                        select: 'Select OS',
+                        {% for key, option in os_options %}
+                             '{{ key }}': '{{ option }}',
+                        {% endfor %}
+                    }
+                },
+                node_login: {
+                    title: 'Login',
+                    width: '20%'
+                },
+                node_password: {
+                    title: 'Password',
+                    list: false
+                }
+            }
+        });
+        $('#nodelist').jtable('load');
+   });
+
+</script>
+<style type="text/css">
+body {
+    font: 13px Helvetica, arial, freesans, clean, sans-serif;
+}
+
+label {
+    font-weight: bold;
+    font-size: 15px;
+    color: #666;
+}
+/* form style */
+.jtable-dialog-form styled-select {
+    outline: none;
+    font-size: 15px;
+    text-shadow: 0px 1px 0px #fff;
+    overflow: hidden;
+    background: #fafafa;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+    border: 1px solid #ccc;
+}
+
+.jtable-dialog-form select {
+    padding: 5px;
+    height: 28px;
+    width: 208px;
+    outline: none;
+    font-size: 15px;
+    text-shadow: 0px 1px 0px #fff;
+    overflow: hidden;
+    background: #fafafa;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+    border: 1px solid #ccc;
+}
+.jtable-dialog-form input[type=text] {
+    height: 28px;
+    width: 208px;
+    padding: 5px;
+    font-size: 15px;
+    text-shadow: 0px 1px 0px #fff;
+    outline: none;
+    background: #fafafa;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+    border: 1px solid #ccc;
+}
+.jtable-dialog-form input[type=submit] {
+    height: 28px;
+    width: 60px;
+    padding: 5px;
+    font-size: 15px;
+    color: #ffffff;
+    text-shadow: 0px 1px 0px #fff;
+    outline: none;
+    background: #fe5815;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+    border: 1px solid #ccc;
+
+}
+
+.jtable-dialog-form input[type=text]:focus, select:focus {
+    -webkit-box-shadow: 0px 0px 5px #007eff;
+    -moz-box-shadow: 0px 0px 5px #007eff;
+    box-shadow: 0px 0px 5px #007eff;
+    background: #ffffff;
+}
+/* end form */
+</style>
+<body>
+<div id="nodelist" style="z-index: 0;"></div>
+</body>

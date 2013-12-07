@@ -1,0 +1,197 @@
+body { text-align: center; color: #0caee3; font-size: 14px; margin:50px 0px; padding:0px;}
+
+header { 
+	top:0;
+	position:fixed; 
+	margin: 0;
+	text-align: left; 
+	bottom:0px;
+	height:30px;
+	width:100%;
+	background:#000;
+	font-size: 30px;
+    padding: 0;
+    padding-left: 10%;
+}
+
+nav {
+	position: relative;
+	padding: 0 0 10px 0;
+}
+
+footer { 
+	padding: 8px 0 0 0;
+	position: fixed;
+	bottom:0px;
+	height:30px;
+	width:100%;
+	background:#000;
+}
+
+section {
+	position: relative;
+	top: 160px;
+}
+
+#dash {
+	background: #fff;
+	top: 40px;
+	position: fixed;
+	padding: 0px 10px 0px 10px;
+	border-top-left-radius: 12px;
+	border-top-right-radius: 12px;
+	border-bottom-left-radius: 12px;
+	border-bottom-right-radius: 12px;
+	text-align: center;
+	margin: 0 auto;
+}
+
+#dash li {
+	display: inline-block;
+	list-style: none;
+	padding: 0px 20px 0 20px;
+	font: bold 14px verdana, sans-serif;
+    text-align: center;
+}
+
+p > em { display: block; color: #777; font-style: normal; background: transparent; border: solid 1px transparent; }
+
+ul.large-icons { -webkit-transition: height 1.2s ease; -moz-transition: height 1.2s ease; -o-transition: height 1.2s ease; transition: height 1.2s ease; padding: 0 20px; overflow: hidden; }
+ul.large-icons.showing { padding: 0 20px; }
+ul.large-icons li i { -webkit-transition: color .5s; -moz-transition: color .5s; -o-transition: color .5s; transition: color .5s; color: #231f20; display: block; line-height: 1.4; text-align: center; font-size: 30px; }
+ul.large-icons li:hover i { color: #0caee3; }
+ul.large-icons li p { margin-top: -25px; font-size: 12px; }
+ul.large-icons li:hover p em { font-weight: bold; -webkit-transition: all .5s; -moz-transition: all .5s; -o-transition: all .5s; transition: all .5s; background: #0caee3; color: #fff; border: solid 1px #0899c9; }
+ul.large-icons li { display: block; margin-right: auto; }
+
+@media only screen and (max-device-width: 768px) {
+	ul.large-icons li { margin-right: 56px; }
+}
+
+@media only screen and (max-width: 1000px) {
+	.five.columns.offset-by-one { margin-left: 0px; float: right; }
+}
+ul.large-icons p { padding: 8px 0 0 0; text-align: center; }
+
+*{
+    margin:0;
+    padding:0;
+    font:bold 12px "Lucida Grande", Arial, sans-serif;
+}
+
+#textinput{  
+	margin: 10px;
+	width:400px;  
+	padding:10px;  
+	outline:none;  
+	height:28px;  
+	font-size: 18px;
+	border-top-left-radius: 12px;
+	border-top-right-radius: 12px;
+	border-bottom-left-radius: 12px;
+	border-bottom-right-radius: 12px;
+}  
+.styled-select select {
+	background: transparent;
+	line-height: 28px;
+	height: 28px;
+   	margin: 10px;
+    width:400px;  
+    padding:10px;  
+    outline:none;  
+	font-size: 18px;
+	border-top-left-radius: 12px;
+	border-top-right-radius: 12px;
+	border-bottom-left-radius: 12px;
+	border-bottom-right-radius: 12px;
+}
+   
+.focusField{  
+    border:solid 2px #73A6FF;  
+    background:#EFF5FF;  
+    color:#000;  
+} 
+
+.idleField{  
+    background:#EEE;  
+    color: #6F6F6F;  
+    border: solid 2px #DFDFDF;
+}  
+
+
+/***FIRST STYLE THE BUTTON***/
+input#gobutton{
+	cursor:pointer; /*forces the cursor to change to a hand when the button is hovered*/
+	padding:5px 5px; /*add some padding to the inside of the button*/
+	background:#35b128; /*the colour of the button*/
+	border:1px solid #33842a; /*required or the default border for the browser will appear*/
+	/*give the button curved corners, alter the size as required*/
+	-moz-border-radius: 10px;
+	-webkit-border-radius: 10px;
+	border-radius: 10px;
+	/*give the button a drop shadow*/
+	-webkit-box-shadow: 0 0 4px rgba(0,0,0, .75);
+	-moz-box-shadow: 0 0 4px rgba(0,0,0, .75);
+	box-shadow: 0 0 4px rgba(0,0,0, .75);
+	/*style the text*/
+	color:#f3f3f3;
+	font-size:1.1em;
+}
+/***NOW STYLE THE BUTTON'S HOVER AND FOCUS STATES***/
+input#gobutton:hover, input#gobutton:focus{
+	background-color :#399630; /*make the background a little darker*/
+	/*reduce the drop shadow size to give a pushed button effect*/
+	-webkit-box-shadow: 0 0 1px rgba(0,0,0, .75);
+	-moz-box-shadow: 0 0 1px rgba(0,0,0, .75);
+	box-shadow: 0 0 1px rgba(0,0,0, .75);
+}
+
+
+/***FIRST STYLE THE BUTTON***/
+input#bigbutton {
+	width:500px;
+	background: #3e9cbf; /*the colour of the button*/
+	padding: 8px 14px 10px; /*apply some padding inside the button*/
+	border:1px solid #3e9cbf; /*required or the default border for the browser will appear*/
+	cursor:pointer; /*forces the cursor to change to a hand when the button is hovered*/
+	/*style the text*/
+	font-size:1.5em;
+	font-family:Oswald, sans-serif; /*Oswald is available from http://www.google.com/webfonts/specimen/Oswald*/
+	letter-spacing:.1em;
+	text-shadow: 0 -1px 0px rgba(0, 0, 0, 0.3); /*give the text a shadow - doesn't appear in Opera 12.02 or earlier*/
+	color: #fff;
+	/*use box-shadow to give the button some depth - see cssdemos.tupence.co.uk/box-shadow.htm#demo7 for more info on this technique*/
+	-webkit-box-shadow: inset 0px 1px 0px #3e9cbf, 0px 5px 0px 0px #205c73, 0px 10px 5px #999;
+	-moz-box-shadow: inset 0px 1px 0px #3e9cbf, 0px 5px 0px 0px #205c73, 0px 10px 5px #999;
+	box-shadow: inset 0px 1px 0px #3e9cbf, 0px 5px 0px 0px #205c73, 0px 10px 5px #999;
+	/*give the corners a small curve*/
+	-moz-border-radius: 10px;
+	-webkit-border-radius: 10px;
+	border-radius: 10px;
+}
+/***SET THE BUTTON'S HOVER AND FOCUS STATES***/
+input#bigbutton:hover, input#bigbutton:focus {
+	color:#dfe7ea;
+	/*reduce the size of the shadow to give a pushed effect*/
+	-webkit-box-shadow: inset 0px 1px 0px #3e9cbf, 0px 2px 0px 0px #205c73, 0px 2px 5px #999;
+	-moz-box-shadow: inset 0px 1px 0px #3e9cbf, 0px 2px 0px 0px #205c73, 0px 2px 5px #999;
+	box-shadow: inset 0px 1px 0px #3e9cbf, 0px 2px 0px 0px #205c73, 0px 2px 5px #999;
+}
+
+
+#box-wrap {
+    margin: 0 auto;
+    width: 80%;
+    height: 40%;
+    border: 0px;
+}
+
+#container {
+	display: none;
+}
+
+#tools {
+    text-align: center;
+    padding-left: 20%;
+    padding-right: 20%;
+}
