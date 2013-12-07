@@ -32,14 +32,30 @@
 <a name="growpy-architecture" class="anchor" href="#growpy-architecture"><span class="octicon octicon-link"></span></a>Growpy Architecture</h1>
 
 <p>As follow the architecture design with two different component and four layers (html/javascript client, json rest api, controller python/django, ORMs [django-orm/SQLallchemy]):
-<img src="http://engine.cl/django-growpy/growpy-arch.png" alt="architect">
-Goals: </p>
+<img src="http://engine.cl/django-growpy/growpy-arch.png" alt="architect"></p>
+
+<h1>
+<a name="goals" class="anchor" href="#goals"><span class="octicon octicon-link"></span></a>Goals:</h1>
 
 <ul>
-<li>db decoupled</li>
+<li>db decouple</li>
 <li>independent RDBMS (all SQLAlchemy, django supported)</li>
 <li>data transport by SSH protocol</li>
 <li>deploy with gunicorn and nginx are sufficient.</li>
+</ul><h1>
+<a name="status" class="anchor" href="#status"><span class="octicon octicon-link"></span></a>Status</h1>
+
+<p>ALPHA prototype.</p>
+
+<h1>
+<a name="todo" class="anchor" href="#todo"><span class="octicon octicon-link"></span></a>TODO:</h1>
+
+<ul>
+<li>finish agent package</li>
+<li>make stable frontend</li>
+<li>add user and login support</li>
+<li>add CORS support</li>
+<li>make good template responsive design</li>
 </ul><h1>
 <a name="screenshot" class="anchor" href="#screenshot"><span class="octicon octicon-link"></span></a>Screenshot</h1>
 
