@@ -188,7 +188,7 @@ class NodeUpdate(TemplateView):
             if (request.POST['node_id'] != '' and request.POST['node_name'] != '' and
                     request.POST['node_os_name'] != '' and request.POST['node_login'] != ''):
 
-                n = Node.objects.get(node_id=request.POST['id'])
+                n = Node.objects.get(node_id=request.POST['node_id'])
                 if not n:
                     data = {"Message": "Error: Object Does not exist",
                             "Result": "ERROR"}
