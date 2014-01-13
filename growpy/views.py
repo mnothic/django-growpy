@@ -37,8 +37,9 @@ class ChartFileSystemStatsJSON(View):
                     data['stats'].append({
                         'date': str(stat.status_date.strftime('%b')),
                         'name': fs.fs_name + ' mounted on ' + fs.fs_pmount,
-                        'size': stat.status_size, 'used': stat.status_used,
-                        'free': (stat.status_size - stat.status_used)
+                        'size': stat.status_size / 1024 / 1024,
+                        'used': stat.status_used / 1024 / 1024,
+                        'free': (stat.status_size - stat.status_used) / 1024 / 1024
                     })
                     if i == 0:
                         max_used = stat.status_used
@@ -48,12 +49,13 @@ class ChartFileSystemStatsJSON(View):
                     if max_used < stat.status_used:
                         max_used = stat.status_used
                     i += 1
-
+            """
             data['total'].append({
                 'max': max_used,
                 'min': min_used,
                 'recommended': (max_used - min_used)
             })
+            """
         except ObjectDoesNotExist:
             data = {"result": "not found"}
 
