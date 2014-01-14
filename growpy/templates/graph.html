@@ -9,15 +9,17 @@
                      { name: 'used'},
                      { name: 'size'}
                 ],
+                root: "stats",
                 url: '/getstat/{{ node_id }}/{{ fs_id }}/2014/01/12/'
             };
+            console.log(source)
             var data = new $.jqx.dataAdapter(source,
             {
                 autoBind: true,
                 async: false,
                 downloadComplete: function () { },
                 loadComplete: function () { },
-                loadError: function () { }
+                loadError: function (msg) { console.log(msg)}
             });
             //console.log(data);
             var toolTipChart = function (value, itemIndex, serie, group, categoryValue, categoryAxis) {
@@ -40,7 +42,7 @@
                 {
                     dataField: 'date',
                     gridLinesInterval: 6,
-                    showGridLines: false,
+                    showGridLines: true,
                     showLegend: true
                 },
                 colorScheme: 'scheme09',
@@ -53,8 +55,8 @@
                         valueAxis:
                         {
                             minValue: 0,
-                            maxValue: (data['recordids'][0]['size'] * 1.1 + (10 - data['recordids'][0]['size'] / 10)).toFixed(0),
-                            unitInterval: Math.ceil(Math.floor(data['recordids'][0]['size'] * 1.1 + 10 - data['recordids'][0]['size'] / 10) / 10),
+                            maxValue: Math.ceil((data['recordids'][0]['size'] * 1.01) + (10 - data['recordids'][0]['size'] / 10)),
+                            unitInterval: Math.ceil(Math.floor(data['recordids'][0]['size'] * 1.01 + 10 - data['recordids'][0]['size'] / 10) / 10),
                             description: 'Giga Bytes'
                         },
                         /*

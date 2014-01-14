@@ -30,16 +30,21 @@ class ChartFileSystemStatsJSON(View):
                 "total": list()
             }
             for fs in filesystems:
-                date_range = [year + '-' + fmonth + '-01', year + '-' + tmonth + '-31']
-                stats = Status.objects.filter(fs_id=fs.fs_id, status_date__range=date_range)
+                if fmonth != tmonth:
+                    from calendar import monthrange
+                    last_day = str(monthrange(int(year), int(tmonth))[1])
+                    date_range = [year + '-' + fmonth + '-01', year + '-' + tmonth + '-' + last_day]
+                    stats = Status.objects.filter(fs_id=fs.fs_id, status_date__range=date_range, status_date__day='01')
+                else:
+                    stats = Status.objects.filter(fs_id=fs.fs_id, status_date__year=year, status_date__month=fmonth)
                 i = 0
                 for stat in stats:
                     data['stats'].append({
                         'date': str(stat.status_date.strftime('%b')),
                         'name': fs.fs_name + ' mounted on ' + fs.fs_pmount,
-                        'size': stat.status_size / 1024 / 1024,
-                        'used': stat.status_used / 1024 / 1024,
-                        'free': (stat.status_size - stat.status_used) / 1024 / 1024
+                        'size': round(stat.status_size / 1024 / 1024, 2),
+                        'used': round(stat.status_used / 1024 / 1024, 2),
+                        'free': round((stat.status_size - stat.status_used) / 1024 / 1024, 2)
                     })
                     if i == 0:
                         max_used = stat.status_used
@@ -49,13 +54,12 @@ class ChartFileSystemStatsJSON(View):
                     if max_used < stat.status_used:
                         max_used = stat.status_used
                     i += 1
-            """
-            data['total'].append({
-                'max': max_used,
-                'min': min_used,
-                'recommended': (max_used - min_used)
-            })
-            """
+            if i > 0:
+                data['total'].append({
+                    'max': round(max_used / 1024 / 1024, 2),
+                    'min': round(min_used / 1024 / 1024, 2),
+                    'recommended': max_used - min_used
+                })
         except ObjectDoesNotExist:
             data = {"result": "not found"}
 
