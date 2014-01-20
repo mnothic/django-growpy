@@ -157,7 +157,7 @@ class NodeAdd(TemplateView):
                                 "node_login": n.node_login,
                                 "node_password": n.node_password
                             },
-                            "Message": request.POST['name'] + " Saved OK"}
+                            "Message": request.POST['node_name'] + " Saved OK"}
                 except IntegrityError as e:
                     data = {"Message": "Error: {0}".format(e),
                             "Result": "ERROR"}

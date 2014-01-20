@@ -12,7 +12,7 @@
                 root: "stats",
                 url: '/getstat/{{ node_id }}/{{ fs_id }}/2014/01/12/'
             };
-            console.log(source)
+            //console.log(source)
             var data = new $.jqx.dataAdapter(source,
             {
                 autoBind: true,
@@ -41,7 +41,7 @@
                 categoryAxis:
                 {
                     dataField: 'date',
-                    gridLinesInterval: 6,
+                    gridLinesInterval: 1,
                     showGridLines: true,
                     showLegend: true
                 },
@@ -50,7 +50,7 @@
                 seriesGroups:
                 [
                     {
-                        type: 'area',
+                        type: 'line',
                         toolTipFormatFunction: toolTipChart,
                         valueAxis:
                         {
@@ -59,11 +59,9 @@
                             unitInterval: Math.ceil(Math.floor(data['recordids'][0]['size'] * 1.01 + 10 - data['recordids'][0]['size'] / 10) / 10),
                             description: 'Giga Bytes'
                         },
-                        /*
                         mouseover: myEventHandler,
                         mouseout: myEventHandler,
                         click: myEventHandler,
-                        */
                         series: [
                             { dataField: 'used', displayText: 'Used'},
                             { dataField: 'free', displayText: 'Free'},
@@ -71,6 +69,15 @@
                         ]
                     }
                 ]
+            };
+            function myEventHandler(e)
+            {
+                console.log(e);
+                var m = e.elementIndex + 1;
+                if (m.length == 1) m = '0' + m;
+                source.url = '/getstat/{{ node_id }}/{{ fs_id }}/2014/'+ m +'/'+ m +'/';
+                var dataAdapter = new $.jqx.dataAdapter(source);
+                $('#jqxChart').jqxChart({ source: dataAdapter });
             };
             $('#chartContainer').jqxChart(settings);
             $(document).ready(function(){
@@ -88,7 +95,7 @@
                         }
                     });
                 });
-                $('#recommended').html('<strong>Recommended provisioning: ' + ((max - min)/1024/1024).toFixed(2) + 'GB/Year<strong>');
+                $('#recommended').html('<strong>Recommended provisioning: ' + (Math.floor((max - min)/1024/1024)) + 'GB/Year<strong>');
             });
         });
     </script>
