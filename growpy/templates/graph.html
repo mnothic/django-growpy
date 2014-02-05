@@ -3,34 +3,39 @@
             // prepare chart data
             var source =
             {
-                 datatype: "json",
+                 datatype: 'json',
                  datafields: [
                      { name: 'date', type: 'date'},
                      { name: 'used'},
                      { name: 'size'}
                 ],
-                root: "stats",
+                root: 'stats',
                 url: '/getstat/{{ node_id }}/{{ fs_id }}/2014/01/12/'
             };
             //console.log(source)
             var data = new $.jqx.dataAdapter(source,
             {
+                cache: false,
                 autoBind: true,
                 async: false,
-                downloadComplete: function () { },
+                downloadComplete: function (json){
+                    $('#recommended').html('<span style="color:red">Max used:' + json.total[0].max + 'GB.</span> ' +
+                            '<span style="color:blue">Min used:' + json.total[0].min + 'GB.</span> ' +
+                            '<strong>Recommended provisioning: ' + json.total[0].recommended + 'GB/Year<strong>'
+                    );
+                },
                 loadComplete: function () { },
-                loadError: function (msg) { console.log(msg)}
+                loadError: function () { $('#recommended').html('Error load'); }
             });
             //console.log(data);
             var toolTipChart = function (value, itemIndex, serie, group, categoryValue, categoryAxis) {
                 var r ='<div style="text-align:left";>' +
                        '<b>Month: ' + categoryValue + '</b><br />' +
-                       '<b>'+ serie.displayText +': ' + value.toFixed(2) + 'GB</b><br />' +
+                       '<b>'+ serie.displayText +': ' + Math.ceil(value) + 'GB</b><br />' +
                        '</div>';
                 //console.log(r);
                 return r;
             };
-            //console.log(JSON.stringify(data));
             // prepare jqxChart settings
             var settings = {
                 title: "GrowPY Filesystem Stats",
@@ -45,12 +50,12 @@
                     showGridLines: true,
                     showLegend: true
                 },
-                colorScheme: 'scheme09',
+                colorScheme: 'scheme01',
                 showToolTips: true,
                 seriesGroups:
                 [
                     {
-                        type: 'line',
+                        type: 'area',
                         toolTipFormatFunction: toolTipChart,
                         valueAxis:
                         {
@@ -59,9 +64,11 @@
                             unitInterval: Math.ceil(Math.floor(data['recordids'][0]['size'] * 1.01 + 10 - data['recordids'][0]['size'] / 10) / 10),
                             description: 'Giga Bytes'
                         },
+                        /*
                         mouseover: myEventHandler,
                         mouseout: myEventHandler,
                         click: myEventHandler,
+                        */
                         series: [
                             { dataField: 'used', displayText: 'Used'},
                             { dataField: 'free', displayText: 'Free'},
@@ -70,33 +77,8 @@
                     }
                 ]
             };
-            function myEventHandler(e)
-            {
-                console.log(e);
-                var m = e.elementIndex + 1;
-                if (m.length == 1) m = '0' + m;
-                source.url = '/getstat/{{ node_id }}/{{ fs_id }}/2014/'+ m +'/'+ m +'/';
-                var dataAdapter = new $.jqx.dataAdapter(source);
-                $('#jqxChart').jqxChart({ source: dataAdapter });
-            };
             $('#chartContainer').jqxChart(settings);
-            $(document).ready(function(){
-                var min = 0
-                var max = 0
-                var count = 0
-                $.each(data['recordids'], function(index, value){
-                    $.each(value, function(key,value) {
-                        //console.log(key)
-                        if (key == 'used') {
-                            if (count == 0)  { min = value }
-                            if (min > value) { min = value }
-                            if (max < value) { max = value }
-                            count++
-                        }
-                    });
-                });
-                $('#recommended').html('<strong>Recommended provisioning: ' + (Math.floor((max - min)/1024/1024)) + 'GB/Year<strong>');
-            });
+
         });
     </script>
     <table>
