@@ -19,9 +19,10 @@
                 autoBind: true,
                 async: false,
                 downloadComplete: function (json){
-                    $('#recommended').html('<span style="color:red">Max:' + json.total[0].max + 'GB.</span> ' +
-                            '<span style="color:blue">Min:' + json.total[0].min + 'GB.</span> ' +
-                            '<span style="color:green">Provisioning: ' + json.total[0].recommended + 'GB/Year<strong>'
+                    $('#recommended').html(
+                        'Max:<span style="color:red">' + json.total[0].max + 'GB.</span> ' +
+                        'Min:<span style="color:blue">' + json.total[0].min + 'GB.</span> ' +
+                        'Provisioning:<span style="color:green">' + json.total[0].recommended + 'GB/Year</span>'
                     );
                 },
                 loadComplete: function () { },
