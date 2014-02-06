@@ -10,7 +10,7 @@
                      { name: 'size'}
                 ],
                 root: 'stats',
-                url: '/getstat/{{ node_id }}/{{ fs_id }}/2014/01/12/'
+                url: '/getstat/{{ node_id }}/{{ fs_id }}/2014/06/06/'
             };
             //console.log(source)
             var data = new $.jqx.dataAdapter(source,
@@ -19,9 +19,9 @@
                 autoBind: true,
                 async: false,
                 downloadComplete: function (json){
-                    $('#recommended').html('<span style="color:red">Max used:' + json.total[0].max + 'GB.</span> ' +
-                            '<span style="color:blue">Min used:' + json.total[0].min + 'GB.</span> ' +
-                            '<strong>Recommended provisioning: ' + json.total[0].recommended + 'GB/Year<strong>'
+                    $('#recommended').html('<span style="color:red">Max:' + json.total[0].max + 'GB.</span> ' +
+                            '<span style="color:blue">Min:' + json.total[0].min + 'GB.</span> ' +
+                            '<span style="color:green">Provisioning: ' + json.total[0].recommended + 'GB/Year<strong>'
                     );
                 },
                 loadComplete: function () { },
