@@ -145,6 +145,8 @@ class Graph(TemplateView):
             "node_id": request.POST["node_id"],
             "fs_id": request.POST["fs_id"],
             "year": request.POST["year"],
+            "sm": request.POST["start_month"],
+            "em": request.POST["end_month"],
         }
         context = RequestContext(request, data)
         return HttpResponse(template.render(context))
