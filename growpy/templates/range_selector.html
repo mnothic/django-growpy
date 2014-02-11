@@ -1,0 +1,71 @@
+<script>
+$(".jtable-close-button").click(function (){
+    $('div.chart').empty();
+    $("div.overlay").css('display','none');
+});
+
+$("select#range-select").change(function(){
+    $("#range-select > option:selected").each(function(){
+        $("tr#by_year").remove();
+        $("tr#by_month_year").remove();
+        $("tr#month_start").remove();
+        $("tr#month_end").remove();
+        $("tr#day_start").remove();
+        $("tr#day_end").remove();
+        $("tr#button").remove();
+        switch ($(this)[0].value) {
+            case "1":
+                by_year({{ start_year }});
+                break;
+            case "2":
+                by_month_year({{ start_year }});
+                break;
+            case "3":
+                by_day_year({{ start_year }});
+                break;
+        }
+    });
+});
+</script>
+<div class="jtable-main-container">
+    <div class="jtable-busy-panel-background jtable-busy-panel-background-invisible" style="display: none; width: 1195px; height: 94px;"></div>
+    <div class="jtable-busy-message" style="display: none;"></div>
+    <table class="jtable">
+    <tbody>
+        <tr class="jtable-child-row" style="display: table-row;">
+            <td>
+                <div class="jtable-child-table-container" style="display: block;">
+                    <div class="jtable-main-container">
+                        <div class="jtable-busy-panel-background jtable-busy-panel-background-invisible" style="display: none; width: 1195px; height: 94px;"></div>
+                        <div class="jtable-busy-message" style="display: none;"></div>
+                        <div class="jtable-title">
+                            <div class="jtable-title-text">Date Range Selector</div>
+                            <button class="jtable-command-button jtable-close-button" title="Close"><span>Close</span></button>
+                            <div class="jtable-toolbar"></div>
+                        </div>
+                        <table class="jtable jtable-dialog-form">
+                            <tbody id="range-table">
+                                <tr class="jtable-data-row jtable-row-even">
+                                    <td>
+                                        <div class="jtable-input-label">Draw options</div>
+                                    </td>
+                                    <td>
+                                        <div class="jtable-input jtable-dropdown-input">
+                                            <select id="range-select">
+                                                <option value="0" selected>Select</option>
+                                                <option value="1">Entire year</option>
+                                                <option value="2">Month range</option>
+                                                <!--<option value="3">Day's range</option> -->
+                                            </select>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </td>
+        </tr>
+    </tbody>
+    </table>
+</div>
