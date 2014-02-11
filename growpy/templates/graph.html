@@ -10,7 +10,7 @@
                      { name: 'size'}
                 ],
                 root: 'stats',
-                url: '/getstat/{{ node_id }}/{{ fs_id }}/2014/01/12/'
+                url: '/getstat/{{ node_id }}/{{ fs_id }}/{{ year }}/01/12/'
             };
             //console.log(source)
             var data = new $.jqx.dataAdapter(source,
@@ -81,15 +81,43 @@
             $('#chartContainer').jqxChart(settings);
 
         });
+        $(".jtable-close-button").click(function (){
+            $("script#script-range-selector").empty();
+            $('div.chart').empty();
+            $("div.chart").css('display','none');
+            $("div.overlay").css('display','none');
+        })
     </script>
-    <table>
-        <tr>
-            <td>
-                <div id='chartContainer' style="width:740px; height: 360px"/>
-            </td>
-        <tr>
-            <td>
-                <div id="recommended"></div>
-            </td>
-        </tr>
-    </table>
+    <div class="jtable-main-container">
+        <div class="jtable-busy-panel-background jtable-busy-panel-background-invisible" style="display: none; width: 1195px; height: 94px;"></div>
+        <div class="jtable-busy-message" style="display: none;"></div>
+        <table class="jtable">
+            <tbody>
+                <tr class="jtable-child-row">
+                    <td>
+                        <div class="jtable-child-table-container" style="display: block;">
+                            <div class="jtable-busy-panel-background jtable-busy-panel-background-invisible" style="display: none; width: 1195px; height: 94px;"></div>
+                            <div class="jtable-busy-message" style="display: none;"></div>
+                            <div class="jtable-main-container">
+                                <div class="jtable-title">
+                                    <div class="jtable-title-text">Draw Chart</div>
+                                    <button class="jtable-command-button jtable-close-button" title="Close"><span>Close</span></button>
+                                    <div class="jtable-toolbar"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <table id="chart">
+            <tbody>
+                <tr>
+                    <td><div id="chartContainer" style="width:752px; height: 360px"></div></td>
+                </tr>
+                <tr class="jtable-data-row jtable-row-even">
+                    <td><div id="recommended" style="padding: 3px"></div></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>

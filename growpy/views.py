@@ -22,7 +22,7 @@ class ChartFileSystemStatsJSON(View):
     """
     /getstat/1/1/2013/09/12/
     """
-    def get(self, request, node, fs, year, fmonth='01', tmonth='12'):
+    def get(self, request, node, fs, year, fmonth='01', tmonth='12', sday='01', eday='31'):
         try:
             filesystems = Filesystem.objects.filter(node_id=node, fs_id=fs)
             data = {
@@ -121,13 +121,30 @@ class NodeList(TemplateView):
         return HttpResponse(template.render(context))
 
 
+class RangeSelector(TemplateView):
+    @method_decorator(csrf_exempt)
+    def dispatch(self, request):
+        template = loader.get_template('range_selector.html')
+        data = {
+            "node_id": request.POST["node_id"],
+            "fs_id": request.POST["fs_id"],
+            "start_year": 2010
+        }
+        #TODO:
+        # sacar el año mas antiguo que existe en
+        # este nodo y agregarlo como start_year
+        context = RequestContext(request, data)
+        return HttpResponse(template.render(context))
+
+
 class Graph(TemplateView):
     @method_decorator(csrf_exempt)
     def dispatch(self, request):
         template = loader.get_template('graph.html')
         data = {
             "node_id": request.POST["node_id"],
-            "fs_id": request.POST["fs_id"]
+            "fs_id": request.POST["fs_id"],
+            "year": request.POST["year"],
         }
         context = RequestContext(request, data)
         return HttpResponse(template.render(context))

@@ -1,4 +1,4 @@
-
+<!-- nodes magic -->
 <script type="text/javascript">
     $(document).ready(function () {
         $.extend(true, $.hik.jtable.prototype.options, {
@@ -61,16 +61,20 @@
                                         title: 'ST',
                                         sorting: false,
                                         display: function (data) {
-                                                var $img = $('<img height="16px" width="16px" src="/static/imgs/shine_14.png" title="Draw Chart of File Systems" />');
-                                                $img.click(function () {
-                                                    $("div.overlay").toggle();
-                                                    $("div.overlay > div.chart").load('/node/fs/chart/',{
-                                                        'node_id': node.record.node_id,
-                                                        'fs_id': data.record.fs_id
-                                                    }).fadeIn('slow');
-                                                    $("div.overlay").click(function (){
-                                                        $("div.overlay").css('display','none');
-                                                    })
+                                            var $img = $('<img height="16px" width="16px" src="/static/imgs/shine_14.png" title="Draw Chart of File Systems" />');
+                                            $img.click(function () {
+                                                $("div.overlay").toggle();
+                                                $("div.overlay > div.chart").load('/node/fs/range/', {
+                                                    'node_id': node.record.node_id,
+                                                    'fs_id': data.record.fs_id
+                                                }).fadeIn('slow');
+                                                document.cookie = 'node=' + node.record.node_id;
+                                                document.cookie = 'fs=' + data.record.fs_id;
+                                                $(".jtable-close-button").click(function (){
+                                                    $('div.chart').empty();
+                                                    $("div.chart").css('display','none');
+                                                    $("div.overlay").css('display','none');
+                                                })
                                             });
                                             return $img
                                         }
@@ -121,5 +125,5 @@
 
 </script>
 <body>
-<div id="nodelist" style="z-index: 0;"></div>
+    <div id="nodelist" style="z-index: 0;"></div>
 </body>
