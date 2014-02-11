@@ -111,7 +111,7 @@ $(document).on('change',"select#by_year", function(){
         $("#range-table").append(range_button());
         document.cookie = "year=" + $(this).text();
         document.cookie = "start_month=01"
-        document.cookie = "start_month=12"
+        document.cookie = "end_month=12"
         //console.log($(this).text());
     });
 });
