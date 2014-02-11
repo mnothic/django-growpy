@@ -24,6 +24,8 @@ class ChartFileSystemStatsJSON(View):
     """
     def get(self, request, node, fs, year, fmonth='01', tmonth='12', sday='01', eday='31'):
         try:
+            if tmonth < fmonth:
+                fmonth, tmonth = tmonth, fmonth
             filesystems = Filesystem.objects.filter(node_id=node, fs_id=fs)
             data = {
                 "stats": list(),

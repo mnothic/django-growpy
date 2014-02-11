@@ -144,10 +144,10 @@ $(document).on('change',"select#by_month_start", function(){
     $("select#by_month_end > option:selected").each(function(){
         $("tr#button").remove();
         $("#range-table").append(range_button());
-         if ($(this).val().length == 1)
+        if ($(this).val().length == 1)
             document.cookie = "end_month=0" + $(this).val();
-         else
-            document.cookie = "end_month=" + $(this).val();;
+        else
+            document.cookie = "end_month=" + $(this).val();
     });
 });
 // end month range selector
