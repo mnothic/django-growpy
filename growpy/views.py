@@ -152,7 +152,7 @@ class Graph(TemplateView):
 class NodeAdd(TemplateView):
     @method_decorator(csrf_exempt)
     def dispatch(self, request,):
-        if request.method == "POST":
+        if request.method == "POST" and request.POST['node_name'][:5] != 'demo':
             n = Node.objects.filter(node_name=request.POST['node_name'])
             if n:
                 data = {"Message": "Error: Node name exists.",
@@ -189,7 +189,7 @@ class NodeAdd(TemplateView):
 class NodeDel(TemplateView):
     @method_decorator(csrf_exempt)
     def dispatch(self, request):
-        if request.method == "POST":
+        if request.method == "POST" and request.POST['node_name'][:5] != 'demo':
             n = Node.objects.get(node_id=request.POST['node_id'])
             if not n:
                 data = {"Result": "ERROR",
@@ -206,7 +206,7 @@ class NodeDel(TemplateView):
 class NodeUpdate(TemplateView):
     @method_decorator(csrf_exempt)
     def dispatch(self, request,):
-        if request.method == "POST":
+        if request.method == "POST" and request.POST['node_name'][:5] != 'demo':
             if (request.POST['node_id'] != '' and request.POST['node_name'] != '' and
                     request.POST['node_os_name'] != '' and request.POST['node_login'] != ''):
 
