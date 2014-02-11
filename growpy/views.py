@@ -130,9 +130,11 @@ class RangeSelector(TemplateView):
             "fs_id": request.POST["fs_id"],
             "start_year": 2010
         }
-        #TODO:
-        # sacar el año mas antiguo que existe en
-        # este nodo y agregarlo como start_year
+        """
+        TODO:
+        sacar el año mas antiguo que existe en
+        este nodo y agregarlo como start_year
+        """
         context = RequestContext(request, data)
         return HttpResponse(template.render(context))
 
