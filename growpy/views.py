@@ -127,10 +127,12 @@ class RangeSelector(TemplateView):
     @method_decorator(csrf_exempt)
     def dispatch(self, request):
         template = loader.get_template('range_selector.html')
+        fs = Filesystem.objects.filter(node_id=request.POST["node_id"], fs_id=request.POST["fs_id"])[0]
+        firstat = Status.objects.filter(fs_id=fs.fs_id).order_by('-status_date')[0]
         data = {
             "node_id": request.POST["node_id"],
             "fs_id": request.POST["fs_id"],
-            "start_year": 2014
+            "start_year": firstat.status_date.strftime("%Y")
         }
         context = RequestContext(request, data)
         return HttpResponse(template.render(context))
