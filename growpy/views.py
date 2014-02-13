@@ -130,7 +130,7 @@ class RangeSelector(TemplateView):
         data = {
             "node_id": request.POST["node_id"],
             "fs_id": request.POST["fs_id"],
-            "start_year": 2010
+            "start_year": 2014
         }
         context = RequestContext(request, data)
         return HttpResponse(template.render(context))
