@@ -60,7 +60,7 @@ class ChartFileSystemStatsJSON(View):
                 data['total'].append({
                     'max': round(max_used / 1024 / 1024, 2),
                     'min': round(min_used / 1024 / 1024, 2),
-                    'recommended': max_used - min_used
+                    'recommended': round((max_used - min_used) / 1024 / 1024, 2)
                 })
         except ObjectDoesNotExist:
             data = {"result": "not found"}
@@ -128,7 +128,7 @@ class RangeSelector(TemplateView):
     def dispatch(self, request):
         template = loader.get_template('range_selector.html')
         fs = Filesystem.objects.filter(node_id=request.POST["node_id"], fs_id=request.POST["fs_id"])[0]
-        firstat = Status.objects.filter(fs_id=fs.fs_id).order_by('-status_date')[0]
+        firstat = Status.objects.filter(fs_id=fs.fs_id).order_by('status_date')[0]
         data = {
             "node_id": request.POST["node_id"],
             "fs_id": request.POST["fs_id"],
