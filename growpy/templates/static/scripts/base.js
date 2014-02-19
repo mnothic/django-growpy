@@ -154,5 +154,4 @@ $(document).on('change',"select#by_month_start", function(){
 
 // days range selector
 
-
 // end days range selector
