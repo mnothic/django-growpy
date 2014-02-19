@@ -20,9 +20,9 @@
                 async: false,
                 downloadComplete: function (json){
                     $('#recommended').html(
-                        'Max:<span style="color:red">' + json.total[0].max + 'GB.</span> ' +
-                        'Min:<span style="color:blue">' + json.total[0].min + 'GB.</span> ' +
-                        'Provisioning:<span style="color:green">' + json.total[0].recommended + 'GB/Year</span>'
+                        'Max Used:<span style="color:red">' + json.total[0].max + 'GB.</span> ' +
+                        'Min Used:<span style="color:blue">' + json.total[0].min + 'GB.</span> ' +
+                        'Range increment:<span style="color:green">' + json.total[0].recommended + 'GB</span>'
                     );
                 },
                 loadComplete: function () { },
@@ -31,13 +31,14 @@
             //console.log(data);
             var toolTipChart = function (value, itemIndex, serie, group, categoryValue, categoryAxis) {
                 var r ='<div style="text-align:left";>' +
-                       '<b>Month: ' + categoryValue + '</b><br />' +
+                       '<b>Date: ' + categoryValue + '</b><br />' +
                        '<b>'+ serie.displayText +': ' + Math.ceil(value) + 'GB</b><br />' +
                        '</div>';
                 //console.log(r);
                 return r;
             };
             // prepare jqxChart settings
+            var len = data['recordids'].length - 1;
             var settings = {
                 title: "GrowPY Filesystem Stats",
                 description:  data['recordids'][0]['name'],
@@ -47,6 +48,14 @@
                 categoryAxis:
                 {
                     dataField: 'date',
+                    formatFunction: function (value) {
+                        var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May',
+                            'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+                        if (new Date(data['recordids'][0]['date']).getMonth() == new Date(data['recordids'][len]['date']).getMonth())
+                            return new Date(value).getDate();
+                        else
+                            return months[new Date(value).getMonth()];
+                    },
                     gridLinesInterval: 1,
                     showGridLines: true,
                     showLegend: true
@@ -61,8 +70,8 @@
                         valueAxis:
                         {
                             minValue: 0,
-                            maxValue: Math.ceil((data['recordids'][data['recordids'].length-1]['size'] * 1.01) + (10 - data['recordids'][data['recordids'].length-1]['size'] / 10)),
-                            unitInterval: Math.ceil(Math.floor(data['recordids'][data['recordids'].length-1]['size'] * 1.01 + 10 - data['recordids'][data['recordids'].length-1]['size'] / 10) / 10),
+                            maxValue: Math.ceil((data['recordids'][len]['size'] * 1.01) + (10 - data['recordids'][len]['size'] / 10)),
+                            unitInterval: Math.ceil(Math.floor(data['recordids'][len]['size'] * 1.01 + 10 - data['recordids'][len]['size'] / 10) / 10),
                             description: 'Giga Bytes'
                         },
                         /*
@@ -78,7 +87,7 @@
                     }
                 ]
             };
-            console.log(data);
+            //console.log(data);
             $('#chartContainer').jqxChart(settings);
 
         });

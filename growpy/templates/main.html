@@ -8,9 +8,9 @@
     <!-- Include jquery and UI required by jTable -->
     <script type="text/javascript" src="{{ STATIC_URL }}scripts/jquery-2.0.3.min.js"></script>
     <script type="text/javascript" src="{{ STATIC_URL }}libs/jquery-ui-1.10.3.custom/js/jquery-ui-1.10.3.custom.min.js"></script>
-    <link type="text/css" rel="stylesheet" href="{{ STATIC_URL }}libs/jquery-ui-1.10.3.custom/css/smoothness/jquery-ui-1.10.3.custom.min.css"/>
+    <link type="text/css" rel="stylesheet" href="{{ STATIC_URL }}libs/jquery-ui-1.10.3.custom/css/smoothness/jquery-ui-1.10.3.custom.css"/>
     <!-- Include one of jTable styles. -->
-    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}libs/jtable.2.3.1/themes/lightcolor/gray/jtable.css"/>
+    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}libs/jtable.2.3.1/themes/lightcolor/green/jtable.css"/>
     <!-- Include jTable script file. -->
     <script type="text/javascript" src="{{ STATIC_URL }}libs/jtable.2.3.1/jquery.jtable.js"></script>
     <!-- jqwidgets charts -->
@@ -30,7 +30,14 @@
         <div id="header" class="container">
             <nav>
                 <div class="glogo"></div>
-                <div class="head-text"> Grow File System Statistic collector</div>
+                <div class="head-text">{{ title }}</div>
+                <div class="align-right">
+                    <ul>
+                        <li><a href="http://engine.cl/">eNgine</a></li>
+                        <li><a href="http://engine.cl/django-growpy">Documentation</a></li>
+                        <li><a href="https://github.com/mnothic/django-growpy">Source Code</a></li>
+                    </ul>
+                </div>
             </nav>
             <div id="container">
             </div>
@@ -41,8 +48,8 @@
         </div>
     <!-- end header wrapper -->
     </div>
-    <footer class="container">
-    <span>(c) 2013 - eNgine Inc.</span>
+    <footer class="footer">
+        <div class="footer"><span>{{ title }}(c) {{ year }} - eNgine Inc.</span></div>
     </footer>
 </body>
 </html>

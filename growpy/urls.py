@@ -14,4 +14,6 @@ urlpatterns = patterns('',
     url(r'^node/fs/chart/$', views.Graph.as_view()),
     url(r'^getstat/(?P<node>\d+)/(?P<fs>\d+)/(?P<year>\d{4})/(?P<fmonth>\d{2})/(?P<tmonth>\d{2})/$',
         views.ChartFileSystemStatsJSON.as_view()),
+    #url(r'^getstat/(?P<node>\d+)/(?P<fs>\d+)/(?P<year>\d{4})/(?P<fmonth>\d{2})/(?P<tmonth>\d{2})/(?P<sday>\d+)/(?P<eday>\d+)/$',
+     #   views.ChartFileSystemStatsJSON.as_view()),
 )

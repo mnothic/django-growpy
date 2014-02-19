@@ -7,13 +7,16 @@ from django.views.decorators.csrf import csrf_exempt
 from django.utils.decorators import method_decorator
 from django.db import IntegrityError
 import json
+from datetime import datetime
 
 
 class Index(TemplateView):
 
     def dispatch(self, request):
         template = loader.get_template('main.html')
-        data = {'title': "Groupy Web Frontend"}
+        data = {'title': "Growpy FS Web Data Visualizer",
+                'year': str(datetime.now().strftime('%Y'))
+        }
         context = RequestContext(request, data)
         return HttpResponse(template.render(context))
 
@@ -38,11 +41,12 @@ class ChartFileSystemStatsJSON(View):
                     date_range = [year + '-' + fmonth + '-01', year + '-' + tmonth + '-' + last_day]
                     stats = Status.objects.filter(fs_id=fs.fs_id, status_date__range=date_range, status_date__day='01')
                 else:
-                    stats = Status.objects.filter(fs_id=fs.fs_id, status_date__year=year, status_date__month=fmonth)
+                    date_range = [year + '-' + fmonth + '-' + sday, year + '-' + tmonth + '-' + eday]
+                    stats = Status.objects.filter(fs_id=fs.fs_id, status_date__range=date_range)
                 i = 0
                 for stat in stats:
                     data['stats'].append({
-                        'date': str(stat.status_date.strftime('%b')),
+                        'date': str(stat.status_date.strftime('%Y-%m-%d')),
                         'name': fs.fs_name + ' mounted on ' + fs.fs_pmount,
                         'size': round(stat.status_size / 1024 / 1024, 2),
                         'used': round(stat.status_used / 1024 / 1024, 2),
@@ -148,6 +152,8 @@ class Graph(TemplateView):
             "year": request.POST["year"],
             "sm": request.POST["start_month"],
             "em": request.POST["end_month"],
+            #"sd": request.POST["start_day"],
+            #"ed": request.POST["end_day"],
         }
         context = RequestContext(request, data)
         return HttpResponse(template.render(context))
