@@ -1,0 +1,116 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Django-growpy by mnothic</title>
+
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1>Django-growpy</h1>
+        <p>growpy web front-end</p>
+
+        <p class="view"><a href="https://github.com/mnothic/django-growpy">View the Project on GitHub <small>mnothic/django-growpy</small></a></p>
+
+
+        <ul>
+          <li><a href="https://github.com/mnothic/django-growpy/zipball/master">Download <strong>ZIP File</strong></a></li>
+          <li><a href="https://github.com/mnothic/django-growpy/tarball/master">Download <strong>TAR Ball</strong></a></li>
+          <li><a href="https://github.com/mnothic/django-growpy">View On <strong>GitHub</strong></a></li>
+        </ul>
+      </header>
+      <section>
+        <h1>
+<a name="growpy-architecture" class="anchor" href="#growpy-architecture"><span class="octicon octicon-link"></span></a>Growpy Architecture</h1>
+
+<p>As follow the architecture design with two different component and four layers (html/javascript client, json rest api, controller python/django, ORMs [django-orm/SQLallchemy]):
+<img src="http://engine.cl/django-growpy/growpy-arch.png" alt="architect"></p>
+
+<h1>
+<a name="goals" class="anchor" href="#goals"><span class="octicon octicon-link"></span></a>Goals:</h1>
+
+<ul>
+<li>DB decouple</li>
+<li>Independent RDBMS (all SQLAlchemy, django supported)</li>
+<li>Data transport by SSH protocol</li>
+<li>Deploy with gunicorn and nginx are sufficient.</li>
+</ul><h1>
+<a name="status" class="anchor" href="#status"><span class="octicon octicon-link"></span></a>Status</h1>
+
+<p>ALPHA prototype.</p>
+
+<h1>
+<a name="todo" class="anchor" href="#todo"><span class="octicon octicon-link"></span></a>TODO:</h1>
+
+<ul>
+<li>Add user and login support</li>
+<li>Add CORS support</li>
+<li>
+<p>Make good template responsive design</p>
+
+<h1>
+<a name="installation" class="anchor" href="#installation"><span class="octicon octicon-link"></span></a>Installation</h1>
+
+<p>Deploy better with 2.7 but is developed with py3k virtualenv over archlinux, and test a deploy with freebsd 9.2</p>
+
+<div class="highlight highlight-bash"><pre>pkg install python27
+pkg install nginx
+pkg install py27-virtualenwrapper
+pkg install git
+</pre></div>
+
+<p>Configure virtualenv .bash_profile vars and create virtualenv</p>
+
+<div class="highlight highlight-bash"><pre>mkvirtualenv webgrowpy
+workon webgrowpy
+<span class="nb">cd</span> <span class="nv">$VIRTUAL_ENV</span>
+pip install django
+pip install gunicorn
+git clone https://github.com/mnothic/django-growpy.git
+<span class="nb">cd </span>django-growpy
+gunicorn webfront.wsgi
+</pre></div>
+
+<p>Then configure nginx proxy and static files server, in nginx.conf add this:</p>
+
+<div class="highlight highlight-nginx"><pre><span class="k">server</span> <span class="p">{</span>
+   <span class="kn">listen</span>       <span class="mi">80</span><span class="p">;</span>
+   <span class="kn">server_name</span>  <span class="s">your_server.name</span><span class="p">;</span>
+   <span class="kn">access_log</span>   <span class="s">/var/log/nginx/nginx-access.log</span><span class="p">;</span>
+
+   <span class="kn">location</span>  <span class="s">/static/</span> <span class="p">{</span>
+   <span class="kn">root</span> <span class="s">/home/user/.virtualenvs/webgrowpy/django-growpy/growpy/templates</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kn">location</span> <span class="s">/</span> <span class="p">{</span>
+    <span class="kn">proxy_pass</span>   <span class="s">http://127.0.0.1:8000</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+
+<h1>
+<a name="screenshot" class="anchor" href="#screenshot"><span class="octicon octicon-link"></span></a>Screenshot</h1>
+
+<p><img src="http://engine.cl/django-growpy/grow_stats.png" alt="fronted"></p>
+
+<h1>
+<a name="demo" class="anchor" href="http://scene.cl:8080"><span class="octicon octicon-link">Demo</span></a></h1>
+</li>
+</ul>
+      </section>
+      <footer>
+        <p>This project is maintained by <a href="https://github.com/mnothic">mnothic</a></p>
+        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
+      </footer>
+    </div>
+    <script src="javascripts/scale.fix.js"></script>
+    
+  </body>
+</html>
