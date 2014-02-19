@@ -101,7 +101,6 @@ label {
     -moz-border-radius: 3px;
     border-radius: 3px;
     border: 1px solid #ccc;
-    font-weight: bold;
 }
 
 .jtable-dialog-form input[type=text]:focus, select:focus {
