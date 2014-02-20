@@ -1,21 +1,50 @@
+import json
 from django.http import HttpResponse
 from django.template import RequestContext, loader
 from django.views.generic import TemplateView, View
-from growpy.models import Node, Filesystem, Status, OS_CHOICES
 from django.core.exceptions import ObjectDoesNotExist
 from django.views.decorators.csrf import csrf_exempt
 from django.utils.decorators import method_decorator
 from django.db import IntegrityError
-import json
+from django.conf import settings
+from growpy.models import Node, Filesystem, Status, OS_CHOICES
 from datetime import datetime
+from Crypto.Cipher import AES
+from Crypto import Random
+import base64
+
+
+class AESCipher:
+    def __init__(self, key):
+        self.bs = 32
+        self.key = key
+
+    def encrypt(self, raw):
+        raw = self._pad(raw)
+        iv = Random.new().read(AES.block_size)
+        cipher = AES.new(self.key, AES.MODE_CBC, iv)
+        return base64.b64encode(iv + cipher.encrypt(raw))
+
+    def decrypt(self, enc):
+        enc = base64.b64decode(enc)
+        iv = enc[:AES.block_size]
+        cipher = AES.new(self.key, AES.MODE_CBC, iv)
+        return self._unpad(cipher.decrypt(enc[AES.block_size:]))
+
+    def _pad(self, s):
+        return s + (self.bs - len(s) % self.bs) * chr(self.bs - len(s) % self.bs)
+
+    def _unpad(self, s):
+        return s[:-ord(s[len(s)-1:])]
 
 
 class Index(TemplateView):
 
     def dispatch(self, request):
         template = loader.get_template('main.html')
-        data = {'title': "Growpy FS Web Data Visualizer",
-                'year': str(datetime.now().strftime('%Y'))
+        data = {
+            'title': "Growpy FS Web Data Visualizer",
+            'year': str(datetime.now().strftime('%Y'))
         }
         context = RequestContext(request, data)
         return HttpResponse(template.render(context))
@@ -169,10 +198,12 @@ class NodeAdd(TemplateView):
                         "Result": "ERROR"}
             elif (request.POST['node_name'] != '' and request.POST['node_os_name'] != '' and
                     request.POST['node_login'] != '' and request.POST['node_password'] != ''):
+                cipher = AESCipher(settings.AES_KEY)
+                passwd = cipher.encrypt(request.POST['node_password'])
                 n = Node(node_name=request.POST['node_name'],
                          node_os_name=request.POST['node_os_name'],
                          node_login=request.POST['node_login'],
-                         node_password=request.POST['node_password'])
+                         node_password=passwd)
                 try:
                     n.save()
                     data = {"Result": "OK",
@@ -229,7 +260,8 @@ class NodeUpdate(TemplateView):
                     n.node_os_name = request.POST['node_os_name']
                     n.node_login = request.POST['node_login']
                     if request.POST['node_password'] != '':
-                        n.node_password = request.POST['node_password']
+                        cipher = AESCipher(settings.AES_KEY)
+                        n.node_password = cipher.encrypt(request.POST['node_password'])
                     try:
                         n.save()
                         data = {"Result": "OK",
@@ -237,7 +269,8 @@ class NodeUpdate(TemplateView):
                                     "node_id": n.node_id,
                                     "node_name": n.node_name,
                                     "node_os_name": n.node_os_name,
-                                    "node_login": n.node_login
+                                    "node_login": n.node_login,
+                                    "node_password": cipher.decrypt(n.node_password).decode('utf-8')
                                 },
                                 "Message": request.POST['node_name'] + " Saved OK"}
                     except IntegrityError as e:

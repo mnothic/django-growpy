@@ -4,6 +4,7 @@ import os
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 SITE_ROOT = os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
+AES_KEY = '0123456789abcdef'
 
 ADMINS = (
     # ('Your Name', 'your_email@example.com'),
